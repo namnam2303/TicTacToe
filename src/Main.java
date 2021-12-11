@@ -44,8 +44,31 @@ public class Main {
     private static int randomCpuPos() {
         Random random = new Random();
         int cpuPos = 0;
-        while (checkPos(cpuPos) || cpuPos == 0) {
-            cpuPos = random.nextInt(9) + 1;
+        if(cpuPositions.size() >=2 ) {
+            for (List condition : conditions) {
+                int count = 0;
+                for (int i = 0; i < condition.size(); i++) {
+                    if(cpuPositions.contains(condition.get(i))) {
+                        count++;
+                    }
+                }
+                if (count == 2) {
+                    for (int i = 0; i < condition.size(); i++) {
+                        if(!cpuPositions.contains(condition.get(i))) {
+                            cpuPos = checkPos((int) condition.get(i)) ? 0 : (int) condition.get(i);
+                        }
+                    }
+                }
+            }
+            if (cpuPos == 0) {
+                while (checkPos(cpuPos) || cpuPos == 0) {
+                    cpuPos = random.nextInt(9) + 1;
+                }
+            }
+        } else {
+            while (checkPos(cpuPos) || cpuPos == 0) {
+                cpuPos = random.nextInt(9) + 1;
+            }
         }
         cpuPositions.add(cpuPos);
         return cpuPos;
