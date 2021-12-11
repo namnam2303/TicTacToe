@@ -8,7 +8,7 @@ public class Main {
     private static List<List> conditions = new ArrayList<List>();
     private static List<Integer> playerPositions = new ArrayList<>();
     private static List<Integer> cpuPositions = new ArrayList<>();
-
+    // Điều kiện thắng ( lưu vị trí của các trường hợp thắng)
     public static void setConditions(List<List> conditions) {
         conditions.add(Arrays.asList(1, 2, 3));
         conditions.add(Arrays.asList(4, 5, 6));
@@ -23,6 +23,7 @@ public class Main {
     private static Scanner _sc = new Scanner(System.in);
 
     public static void main(String[] args) {
+        
         String gameBoard[][] = {{"   ", " | ", "   ", " | ", "   "},
                 {"---", "-+-", "---", "-+-", "---"},
                 {"   ", " | ", "   ", " | ", "   "},
@@ -30,7 +31,7 @@ public class Main {
                 {"   ", " | ", "   ", " | ", "   "}};
         setConditions(conditions);
         int result = status(gameBoard);
-        while (result == -1) {
+        while (result == -1) { // Chạy đến khi nào game kết thúc
             updateGameBoard(gameBoard, getPlayerPos(), "player");
             result = status(gameBoard);
             if (result != -1) {
@@ -41,13 +42,14 @@ public class Main {
             printGameBoard(gameBoard);
             result = status(gameBoard);
         }
+        // 1 là người thắng, 0 là máy thắng và 2 là hòa
         System.out.println(result == 1 ? "Congratulations! You win" : result == 0 ? "Failed! Cpu wins!" : "Drawn!");
     }
-
+    // Method random vị trí của máy
     private static int randomCpuPos() {
         Random random = new Random();
         int cpuPos = 0;
-        if (cpuPositions.size() >= 2) {
+        if (cpuPositions.size() >= 2) { // Nếu máy đã chọn từ 2 lần trở lên sẽ ưu tiên chọn vị trí để chiến thắng
             for (List condition : conditions) {
                 int count = 0;
                 for (int i = 0; i < condition.size(); i++) {
@@ -63,7 +65,7 @@ public class Main {
                     }
                 }
             }
-            if (cpuPos == 0) {
+            if (cpuPos == 0) { // Nếu ko tìm được vị trí để thắng luôn thì random như bình thường
                 while (checkPos(cpuPos) || cpuPos == 0) {
                     cpuPos = random.nextInt(9) + 1;
                 }
@@ -76,7 +78,7 @@ public class Main {
         cpuPositions.add(cpuPos);
         return cpuPos;
     }
-
+    // Phương thức kiểm tra vị trí mới với các vị trí đã được đánh dấu xem có trùng lặp không
     private static boolean checkPos(int pos) {
         return playerPositions.contains(pos) || cpuPositions.contains(pos);
     }
@@ -102,7 +104,7 @@ public class Main {
             return -1;
         }
     }
-
+    // Phương thức in game ra màn hình
     private static void printGameBoard(String gameBoard[][]) {
         for (String[] row : gameBoard) {
             for (String str : row) {
@@ -111,7 +113,7 @@ public class Main {
             System.out.println();
         }
     }
-
+    // Phương thức cập nhập bảng game sau khi đã có vị trí của người hoặc máy
     private static void updateGameBoard(String gameBoard[][], int pos, String user) {
         String symbol = user.equals("player") ? " X " : " 0 ";
         switch (pos) {
@@ -146,7 +148,7 @@ public class Main {
                 break;
         }
     }
-
+    // Phương thức lấy vị trí do người chơi chọn
     private static int getPlayerPos() {
         int pos = 0;
         while ((pos < 1 || pos > 9) || checkPos(pos)) {
