@@ -82,7 +82,7 @@ public class Main {
     private static boolean checkPos(int pos) {
         return playerPositions.contains(pos) || cpuPositions.contains(pos);
     }
-
+    // Phương thức kiểm tra trạng thái của game sau mỗi lần cập nhật vị trí của người chơi và máy
     private static int status(String[][] gameBoard) {
         if (playerPositions.size() + cpuPositions.size() == 9) {
             for (List c : conditions) {
