@@ -30,17 +30,17 @@ public class Main {
                 {"---", "-+-", "---", "-+-", "---"},
                 {"   ", " | ", "   ", " | ", "   "}};
         setConditions(conditions);
-        int result = status(gameBoard);
+        int result = status();
         while (result == -1) { // Chạy đến khi nào game kết thúc
             updateGameBoard(gameBoard, getPlayerPos(), "player");
-            result = status(gameBoard);
+            result = status();
             if (result != -1) {
                 printGameBoard(gameBoard);
                 break;
             }
             updateGameBoard(gameBoard, randomCpuPos(), "cpu");
             printGameBoard(gameBoard);
-            result = status(gameBoard);
+            result = status();
         }
         // 1 là người thắng, 0 là máy thắng và 2 là hòa
         System.out.println(result == 1 ? "Congratulations! You win" : result == 0 ? "Failed! Cpu wins!" : "Drawn!");
@@ -83,7 +83,7 @@ public class Main {
         return playerPositions.contains(pos) || cpuPositions.contains(pos);
     }
     // Phương thức kiểm tra trạng thái của game sau mỗi lần cập nhật vị trí của người chơi và máy
-    private static int status(String[][] gameBoard) {
+    private static int status() {
         if (playerPositions.size() + cpuPositions.size() == 9) {
             for (List c : conditions) {
                 if (playerPositions.containsAll(c)) {
