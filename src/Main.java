@@ -65,14 +65,20 @@ public class Main {
                     }
                 }
             }
-            if (cpuPos == 0) { // Nếu ko tìm được vị trí để thắng luôn thì random như bình thường
-                while (checkPos(cpuPos) || cpuPos == 0) {
-                    cpuPos = random.nextInt(9) + 1;
+            if (cpuPos == 0) { // Nếu ko tìm được vị trí để thắng luôn thì ngăn chặn hoặc random
+                cpuPos = preventPlayerWin();
+                if (cpuPos == 0) {
+                    while (checkPos(cpuPos) || cpuPos == 0) {
+                        cpuPos = random.nextInt(9) + 1;
+                    }
                 }
             }
         } else {
-            while (checkPos(cpuPos) || cpuPos == 0) {
-                cpuPos = random.nextInt(9) + 1;
+            cpuPos = preventPlayerWin();    // Ngăn chặn người chơi thắng
+            if (cpuPos == 0) {  // Nếu người chơi chưa thể thắng thì random như bình thường
+                while (checkPos(cpuPos) || cpuPos == 0) {
+                    cpuPos = random.nextInt(9) + 1;
+                }
             }
         }
         cpuPositions.add(cpuPos);
@@ -103,6 +109,26 @@ public class Main {
             }
             return -1;
         }
+    }
+    // Phương thức ngăn chặn người chơi chiến thắng nếu người chơi có 2/3 vị trí để thắng
+    private static int preventPlayerWin() {
+        int cpuPos = 0;
+        for (List condition : conditions) {
+            int countPlayerPos = 0;
+            for (int i = 0; i < condition.size(); i++) {
+                if (playerPositions.contains(condition.get(i))) {
+                    countPlayerPos++;
+                }
+            }
+            if (countPlayerPos == 2) {
+                for (int i = 0; i < condition.size(); i++) {
+                    if (!playerPositions.contains(condition.get(i))) {
+                        cpuPos = checkPos((int) condition.get(i)) ? 0 : (int) condition.get(i);
+                    }
+                }
+            }
+        }
+        return cpuPos;
     }
     // Phương thức in game ra màn hình
     private static void printGameBoard(String gameBoard[][]) {
