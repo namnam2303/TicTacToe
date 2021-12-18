@@ -49,33 +49,26 @@ public class Main {
     private static int randomCpuPos() {
         Random random = new Random();
         int cpuPos = 0;
-        if (cpuPositions.size() >= 2) { // Nếu máy đã chọn từ 2 lần trở lên sẽ ưu tiên chọn vị trí để chiến thắng
+        if(cpuPositions.size() >= 2) {  // Nếu máy đã đánh dấu từ 2 vị trí 
             for (List condition : conditions) {
-                int count = 0;
+                int countCpuPos = 0;
                 for (int i = 0; i < condition.size(); i++) {
                     if (cpuPositions.contains(condition.get(i))) {
-                        count++;
+                        countCpuPos++;
                     }
                 }
-                if (count == 2) {
+                if (countCpuPos == 2) {
                     for (int i = 0; i < condition.size(); i++) {
                         if (!cpuPositions.contains(condition.get(i))) {
-                            cpuPos = checkPos((int) condition.get(i)) ? 0 : (int) condition.get(i);
+                            cpuPos = checkPos((int) condition.get(i)) ? 0 : (int) condition.get(i); // Tìm vị trí thắng luôn
                         }
                     }
                 }
             }
-            if (cpuPos == 0) { // Nếu ko tìm được vị trí để thắng luôn thì ngăn chặn hoặc random
-                cpuPos = preventPlayerWin();
-                if (cpuPos == 0) {
-                    while (checkPos(cpuPos) || cpuPos == 0) {
-                        cpuPos = random.nextInt(9) + 1;
-                    }
-                }
-            }
-        } else {
-            cpuPos = preventPlayerWin();    // Ngăn chặn người chơi thắng
-            if (cpuPos == 0) {  // Nếu người chơi chưa thể thắng thì random như bình thường
+        }
+        if (cpuPos == 0) { // Nếu ko tìm được vị trí để thắng luôn thì ngăn chặn hoặc random
+            cpuPos = preventPlayerWin();
+            if (cpuPos == 0) {
                 while (checkPos(cpuPos) || cpuPos == 0) {
                     cpuPos = random.nextInt(9) + 1;
                 }
@@ -112,7 +105,7 @@ public class Main {
     }
     // Phương thức ngăn chặn người chơi chiến thắng nếu người chơi có 2/3 vị trí để thắng
     private static int preventPlayerWin() {
-        int cpuPos = 0;
+        int cpuPos = 0; // Mặc định là 0
         for (List condition : conditions) {
             int countPlayerPos = 0;
             for (int i = 0; i < condition.size(); i++) {
@@ -120,10 +113,10 @@ public class Main {
                     countPlayerPos++;
                 }
             }
-            if (countPlayerPos == 2) {
+            if (countPlayerPos == 2) {  // Nếu người chơi chuẩn bị thắng
                 for (int i = 0; i < condition.size(); i++) {
                     if (!playerPositions.contains(condition.get(i))) {
-                        cpuPos = checkPos((int) condition.get(i)) ? 0 : (int) condition.get(i);
+                        cpuPos = checkPos((int) condition.get(i)) ? 0 : (int) condition.get(i); // Xuất vị trí đánh chặn
                     }
                 }
             }
